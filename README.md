@@ -1,1 +1,1 @@
-# wft-react-class-aug21
+# React Class (Aug 2021)

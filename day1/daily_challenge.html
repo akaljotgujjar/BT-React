@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Challenge 1</title>
+</head>
+
+<body>
+    <h1>Daily Challenge 1</h1>
+
+    <p>Open web console to see results</p>
+
+    <script>
+        // http://www.omdbapi.com/
+
+        const apiKey = "YOUR_OMDBAPI_KEY_HERE"; // Tip: typically you'll want to keep any keys out of git
+        const baseApiURL = `http://www.omdbapi.com/?apikey=${apiKey}&`;
+
+        /* Write an arrow function called getMoviesBySearchTerm that takes a search string as
+        input and uses fetch and async/await to get an array of movies with a matching title from OMDb API. */
+        const getMoviesBySearchTerm = async (searchTerm) => {
+            const searchURL = `${baseApiURL}s=${searchTerm}`; // based on the omdbapi docs we need to use s query string
+
+            const response = await fetch(searchURL);
+
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+
+            const result = await response.json();
+
+            if (result.Response === "True") {
+                return result.Search;
+            }
+
+            return [];
+        };
+
+        // Test Driver
+        getMoviesBySearchTerm("heat").then((movies) => {
+            console.log("Movies found:", movies)
+        }).catch((err) => {
+            console.error("Error:", err); // to see this ran, change baseApiURL to some random url to mimic failure
+        });
+
+        getMoviesBySearchTerm("asfasdfasdfasd").then((movies) => {
+            console.log("Movies found:", movies);
+        }).catch((err) => {
+            console.error("Error:", err);
+        });
+
+        /* Write another arrow function called getMovieDetailsById that takes a valid OMDb movie id as input and
+        uses fetch and async/await to get an object of detailed information about the specified movie. */
+        const getMovieDetailsById = async (searchId) => {
+            const searchURL = `${baseApiURL}i=${searchId}`; // based on the omdbapi docs we need to use i query string
+
+            const response = await fetch(searchURL);
+
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+
+            const result = await response.json();
+
+            if (result) {
+                return result;
+            }
+
+            return null;
+        };
+
+        // Test Driver
+        getMovieDetailsById("tt0113277").then((movie) => {
+            console.log("Movie Info:", movie)
+        }).catch((err) => {
+            console.error("Error:", err);
+        });
+
+        getMovieDetailsById("tt0110357").then((movie) => {
+            console.log("Movie Info:", movie);
+        }).catch((err) => {
+            console.error("Error:", err);
+        });
+
+        // Note: in your console the order will vary since these are asynchronous callbacks, so whichever
+        // is completed first gets shown first, so don't be alarm if you see them in different order.
+        // We can control order by using more awaits or chained promises, but don't need to do that for now.
+    </script>
+</body>
+
+</html>
