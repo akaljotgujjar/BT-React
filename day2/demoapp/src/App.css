@@ -1,3 +1,36 @@
+/* App component
+ ------------------------------- */
 .App {
-  text-align: center;
+  margin: 10px;
+}
+
+/*
+ MovieCard component
+ ------------------------------- */
+.MovieCard {
+  border: 1px solid #ccc;
+  display: inline-block;
+}
+
+.MovieCard__footer {
+  padding: 10px;
+}
+
+.MovieCard__title {
+  margin: 0;
+
+  width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.MovieCard__tag {
+  background-color: pink;
+  color: darkred;
+  border: 1px solid darkred;
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
 }
