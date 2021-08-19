@@ -1,3 +1,8 @@
+/* Utilities
+ ------------------------------- */
+.flex-1 { flex: 1; }
+.h-100 { height: 100px; }
+
 /* App component
  ------------------------------- */
 .App {
@@ -33,4 +38,57 @@
   padding: 2px 10px;
   border-radius: 5px;
   text-transform: capitalize;
+}
+
+/*
+ MovieDetails component
+ ------------------------------- */
+.MovieDetails {
+
+}
+
+.MovieDetails__details {
+  padding: 10px;
+  width: 350px;
+}
+
+.MovieDetails__title {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.MovieDetails__subtitle {
+  font-size: 1.2em;
+  margin-bottom: 0;
+}
+
+.MovieDetails__rating {
+  color: blue;
+  font-weight: bold;
+  font-size: 1.6em;
+  text-align: right;
+}
+
+.MovieDetails__tags {
+  padding: 0;
+}
+
+.MovieDetails__tags > li {
+  list-style-type: none;
+  display: inline-block;
+  background-color: #ccc;
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.MovieDetails__heading {
+
+}
+
+.MovieDetails__description {
+  margin: 0;
 }
