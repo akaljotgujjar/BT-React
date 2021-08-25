@@ -6,10 +6,16 @@ import { getMoviesBySearchTerm } from "./utils"; // notice how we don't have to 
 // import MovieDetails from "./components/MovieDetails";
 import Spinner from "./components/Spinner";
 import MovieList from "./components/MovieList";
-import Modal from "./components/Modal";
+// import Modal from "./components/Modal";
+import SearchBar from "./components/SearchBar";
+import Paginator from "./components/Paginator";
 
 function App() {
-  const [searchTerm, setSearchTerm] = useState("lion");
+  const [searchTerm, setSearchTerm] = useState("batman");
+  const [searchType, setSearchType] = useState("");
+  const [totalResults, setTotalResults] = useState("-");
+  const [totalPages, setTotalPages] = useState("-");
+  const [resultPage, setResultPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
@@ -19,22 +25,25 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
 
-    getMoviesBySearchTerm(searchTerm)
-      .then((movies) => {
-        console.log(movies);
+    getMoviesBySearchTerm(searchTerm, { type: searchType, page: resultPage })
+      .then((result) => {
+        console.log(result);
 
-        setMovies(movies);
+        setMovies(result.Search);
+        setTotalResults(result.totalResults);
+        setTotalPages(Math.ceil(result.totalResults / 10));
         setError(null);
       })
       .catch((err) => {
         setError(err);
         setMovies([]);
+        setTotalResults("-");
         console.error("Error:", err);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []); // empty array, means never execute the effect again, do it only once and that's it
+  }, [searchTerm, searchType, resultPage]); // empty array, means never execute the effect again, do it only once and that's it
 
   if (isLoading) {
     return <Spinner />;
@@ -47,36 +56,24 @@ function App() {
   return (
     <div className="App">
       <h1>Movie App</h1>
+      <SearchBar
+        handleUpdate={(term, type) => {
+          setSearchTerm(term);
+          setSearchType(type);
+        }}
+      />
 
       <MovieList movies={movies} />
-      <Modal />
 
-
+      <Paginator
+        currentPage={resultPage}
+        totalPages={totalPages}
+        handlePageChange={(direction) => {
+          setResultPage(resultPage + direction);
+        }}
+      />
     </div>
   );
-
-  //     {/* Using the MovieCard component */}
-  //     { <MovieCard
-  //       title={movie.Title}
-  //       type={movie.Type}
-  //       posterUrl={movie.Poster}
-  //     /> }
-
-  //     <div className="h-100"></div>
-
-  //     {/* Using the MovieDetails component */}
-  //     {/* <MovieDetails
-  //       posterUrl={movie.Poster}
-  //       title={movie.Title}
-  //       rated={movie.Rated}
-  //       runtime={movie.Runtime}
-  //       genre={movie.Genre}
-  //       plot={movie.Plot}
-  //       actors={movie.Actors}
-  //       rating={movie.Rating}
-  //     /> */}
-  //   </div>
-  // );
 }
 
 export default App;

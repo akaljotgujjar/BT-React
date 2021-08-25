@@ -1,13 +1,10 @@
 import React from "react";
+import "./Modal.css";
 
-import { MovieDetails } from "./MovieDetails";
-
-function Modal({ show, onClose, children }) {
+function Modal() {
   return (
-    <div>
-        
-    </div>
-  )
+    <div></div>
+  );
 }
 
 export default Modal;

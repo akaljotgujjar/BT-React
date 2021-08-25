@@ -6,42 +6,45 @@ const baseApiURL = `http://www.omdbapi.com/?apikey=${apiKey}&`;
 /* Write an arrow function called getMoviesBySearchTerm that takes a search string as
 input and uses fetch and async/await to get an array of movies with a matching title from OMDb API. */
 
-export const getMoviesBySearchTerm = async (searchTerm) => {
-    const searchURL = `${baseApiURL}s=${searchTerm}`; // based on the omdbapi docs we need to use s query string
+export const getMoviesBySearchTerm = async (searchTerm, queryOptions) => {
+  const extraQueryString = new URLSearchParams(queryOptions).toString;
 
-    const response = await fetch(searchURL);
+  const searchURL = `${baseApiURL}s=${searchTerm}&${extraQueryString}`; // based on the omdbapi docs we need to use s query string
 
-    if (!response.ok) {
-        return Promise.reject(response.statusText);
-    }
+  console.log(searchURL);
 
-    const result = await response.json();
+  const response = await fetch(searchURL);
 
-    if (result.Response === "True") {
-        return result.Search;
-    }
+  if (!response.ok) {
+    return Promise.reject(response.statusText);
+  }
 
-    return [];
+  const result = await response.json();
+
+  if (result.Response === "True") {
+    return result;
+  }
+
+  return {};
 };
-
 
 /* Write another arrow function called getMovieDetailsById that takes a valid OMDb movie id as input and
 uses fetch and async/await to get an object of detailed information about the specified movie. */
 
 export const getMovieDetailsById = async (searchId) => {
-    const searchURL = `${baseApiURL}i=${searchId}`; // based on the omdbapi docs we need to use i query string
+  const searchURL = `${baseApiURL}i=${searchId}`; // based on the omdbapi docs we need to use i query string
 
-    const response = await fetch(searchURL);
+  const response = await fetch(searchURL);
 
-    if (!response.ok) {
-        return Promise.reject(response.statusText);
-    }
+  if (!response.ok) {
+    return Promise.reject(response.statusText);
+  }
 
-    const result = await response.json();
+  const result = await response.json();
 
-    if (result) {
-        return result;
-    }
+  if (result) {
+    return result;
+  }
 
-    return null;
+  return null;
 };

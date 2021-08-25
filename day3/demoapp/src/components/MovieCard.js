@@ -9,7 +9,7 @@ function MovieCard({ title, type, posterUrl }) {
         <h3 className="MovieCard__title" title={title}>
           {title}
         </h3>
-        <div className="MovieCard__tag">{type}</div>
+        <button className="MovieCard__tag">{type}</button>
       </footer>
     </article>
   );
