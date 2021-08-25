@@ -1,4 +1,6 @@
 import React from "react";
+// import Button from "./Button.styles";
+import Button from "react-bootstrap/Button";
 
 function Paginator({ handlePageChange, currentPage, totalPages }) {
   function showPrevious() {
@@ -10,23 +12,29 @@ function Paginator({ handlePageChange, currentPage, totalPages }) {
   }
 
   const button = {
-      backgroundColor: "#007bff",
-      padding: 20,
-      color: "#FFF",
-      border: 0,
-      fontSize: "36px",
-      fontWeight: "bold"
-  }
+    backgroundColor: "#007bff",
+    padding: 20,
+    color: "#FFF",
+    border: 0,
+    fontSize: "36px",
+    fontWeight: "bold",
+  };
 
   return (
     <div>
       <p>
         Page {currentPage} of {totalPages}{" "}
       </p>
-      <button style={button} onClick={showPrevious} disabled={currentPage === 1}>
+      <Button
+        variant="info"
+        onClick={showPrevious}
+        disabled={currentPage === 1}
+      >
         &lt;
-      </button>
-      <button style={button} onClick={showNext}>&gt;</button>
+      </Button>
+      <Button variant="success" onClick={showNext}>
+        &gt;
+      </Button>
     </div>
   );
 }

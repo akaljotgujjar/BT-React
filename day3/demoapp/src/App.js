@@ -9,6 +9,7 @@ import MovieList from "./components/MovieList";
 // import Modal from "./components/Modal";
 import SearchBar from "./components/SearchBar";
 import Paginator from "./components/Paginator";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("batman");
