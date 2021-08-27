@@ -6,7 +6,9 @@ function SearchBar({ handleUpdate }) {
 
   function handleMovieSearch(e) {
     e.preventDefault();
+
     console.log(movieTitleTerm.current.value, sourceType.current.value);
+
     handleUpdate(movieTitleTerm.current.value, sourceType.current.value);
   }
 
@@ -19,6 +21,8 @@ function SearchBar({ handleUpdate }) {
         <option value="episode">Episode</option>
       </select>
       <button>Search</button>
+
+      {/* <div className="box">SearchBar.js</div> */}
     </form>
   );
 }

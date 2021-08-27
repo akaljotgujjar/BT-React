@@ -7,9 +7,9 @@ const baseApiURL = `http://www.omdbapi.com/?apikey=${apiKey}&`;
 input and uses fetch and async/await to get an array of movies with a matching title from OMDb API. */
 
 export const getMoviesBySearchTerm = async (searchTerm, queryOptions) => {
-  const extraQueryString = new URLSearchParams(queryOptions).toString;
+  const extraQueryStrings = new URLSearchParams(queryOptions).toString();
 
-  const searchURL = `${baseApiURL}s=${searchTerm}&${extraQueryString}`; // based on the omdbapi docs we need to use s query string
+  const searchURL = `${baseApiURL}s=${searchTerm}&${extraQueryStrings}`; // based on the omdbapi docs we need to use s query string
 
   console.log(searchURL);
 
@@ -46,5 +46,5 @@ export const getMovieDetailsById = async (searchId) => {
     return result;
   }
 
-  return null;
+  return {};
 };

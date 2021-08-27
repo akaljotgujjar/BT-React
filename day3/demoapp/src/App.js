@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import { getMoviesBySearchTerm } from "./utils"; // notice how we don't have to include .js extension
 
+// Components
 // import MovieCard from "./components/MovieCard";
-// import MovieDetails from "./components/MovieDetails";
+import MovieDetails from "./components/MovieDetails";
 import Spinner from "./components/Spinner";
 import MovieList from "./components/MovieList";
-// import Modal from "./components/Modal";
 import SearchBar from "./components/SearchBar";
 import Paginator from "./components/Paginator";
+import Modal from "./components/Modal";
+
+// Resources
+// import boxStyles from "./styles/box.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+import "./App.css";
+import { getMoviesBySearchTerm, getMovieDetailsById } from "./utils"; // notice how we don't have to include .js extension
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("batman");
@@ -21,8 +26,14 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [error, setError] = useState(null);
 
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [selectedMovie, setSelectedMovie] = useState({});
+
+  const [show, setShow] = useState(false);
+
   // Since fetch api is something that happens outside of the function where it's invoked, it's considered
   // a side effect, so we need to use inside a useEffect hook
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -33,6 +44,7 @@ function App() {
         setMovies(result.Search);
         setTotalResults(result.totalResults);
         setTotalPages(Math.ceil(result.totalResults / 10));
+
         setError(null);
       })
       .catch((err) => {
@@ -44,19 +56,35 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [searchTerm, searchType, resultPage]); // empty array, means never execute the effect again, do it only once and that's it
+  }, [searchTerm, searchType, resultPage]);
+
+  useEffect(() => {
+    if (selectedMovieId) {
+      getMovieDetailsById(selectedMovieId)
+        .then((movie) => {
+          movie.rating = movie.Ratings?.[0].Value.split("/")[0];
+
+          setSelectedMovie(movie);
+          setShow(true);
+        })
+        .catch((err) => {
+          console.error("Whoops");
+        });
+    }
+  }, [selectedMovieId]);
 
   if (isLoading) {
     return <Spinner />;
   }
 
   if (error) {
-    return <div>Error {error}</div>;
+    return <div>Whoops! {error}</div>;
   }
 
   return (
     <div className="App">
       <h1>Movie App</h1>
+
       <SearchBar
         handleUpdate={(term, type) => {
           setSearchTerm(term);
@@ -64,7 +92,12 @@ function App() {
         }}
       />
 
-      <MovieList movies={movies} />
+      <MovieList
+        movies={movies}
+        updateMovie={(movie) => {
+          setSelectedMovieId(movie);
+        }}
+      />
 
       <Paginator
         currentPage={resultPage}
@@ -73,6 +106,25 @@ function App() {
           setResultPage(resultPage + direction);
         }}
       />
+
+      <Modal
+        show={show}
+        updateClose={(showStatus) => {
+          setShow(showStatus);
+        }}
+      >
+        <MovieDetails
+          posterUrl={selectedMovie.Poster}
+          title={selectedMovie.Title}
+          rated={selectedMovie.Rated}
+          runtime={selectedMovie.Runtime}
+          genre={selectedMovie.Genre}
+          plot={selectedMovie.Plot}
+          actors={selectedMovie.Actors}
+          rating={selectedMovie.rating}
+        />
+      </Modal>
+
     </div>
   );
 }
